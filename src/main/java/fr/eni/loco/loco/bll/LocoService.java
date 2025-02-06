@@ -12,4 +12,6 @@ public interface LocoService {
 
     public Ingredient readIngredient(long id);
 
+    public void deleteIngredientById(long id);
+
 }

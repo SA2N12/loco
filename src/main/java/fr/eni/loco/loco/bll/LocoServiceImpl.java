@@ -28,5 +28,10 @@ public class LocoServiceImpl implements LocoService {
     public Ingredient readIngredient(long id) {
         return ingredientDAO.read(id);
     }
+
+    @Override
+    public void deleteIngredientById(long id) {
+        ingredientDAO.deleteById(id);
+    }
     
 }
