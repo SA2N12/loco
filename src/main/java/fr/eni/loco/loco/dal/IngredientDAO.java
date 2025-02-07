@@ -12,10 +12,12 @@ public interface IngredientDAO {
 
     public Ingredient read(long id);
 
-    public void incrementQuantity(Ingredient ingredient );
+    public void incrementQuantity(long id);
 
-    public void decrementQuantity(Ingredient ingredient );
+    public void decrementQuantity(long id);
 
     public void deleteById(long id);
+
+    public Ingredient getByName(String name);
      
 }

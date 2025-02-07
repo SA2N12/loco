@@ -17,7 +17,10 @@ public class IngredientDAOImpl implements IngredientDAO {
     private static final String INSERT = "insert into ingredients (name, quantity) values  (:name, :quantity)";
     private static final String SELECT_ALL = "select id, name, quantity from Ingredients";
     private static final String SELECT_BY_ID = "select id, name, quantity from ingredients where id=:idIngredient";
-    private static final String DELETE_BY_ID = "DELETE FROM Ingredients WHERE id=:idIngredient"; 
+    private static final String DELETE_BY_ID = "delete from ingredients where id=:idIngredient";
+    private static final String INCREMENT = "update ingredients set quantity = quantity + 1 where id = :idIngredient";
+    private static final String DECREMENT = "update ingredients set quantity = quantity - 1 where id = :idIngredient";  
+    private static final String SELECT_BY_NAME = "select name from ingredients where name=:nameIngredient";
 
     private NamedParameterJdbcTemplate namedParameter;
 
@@ -54,13 +57,17 @@ public class IngredientDAOImpl implements IngredientDAO {
     }
 
     @Override
-    public void incrementQuantity(Ingredient ingredient) {
-        ingredient.setQuantity(ingredient.getQuantity()+1);
+    public void incrementQuantity(long id) {
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("idIngredient", id);
+        namedParameter.update(INCREMENT, map);
     }
 
     @Override
-    public void decrementQuantity(Ingredient ingredient) {
-        ingredient.setQuantity(ingredient.getQuantity()-1);
+    public void decrementQuantity(long id) {
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("idIngredient", id);
+        namedParameter.update(DECREMENT, map);
     }
 
     @Override
@@ -68,5 +75,12 @@ public class IngredientDAOImpl implements IngredientDAO {
         MapSqlParameterSource map = new MapSqlParameterSource();
         map.addValue("idIngredient", id);
         namedParameter.update(DELETE_BY_ID, map);
+    }
+
+    @Override
+    public Ingredient getByName(String name) {
+        MapSqlParameterSource map = new MapSqlParameterSource();
+        map.addValue("nameIngredient", name);
+        return namedParameter.queryForObject(SELECT_BY_NAME, map, new BeanPropertyRowMapper<>(Ingredient.class));
     }
 }

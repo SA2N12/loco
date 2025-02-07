@@ -13,6 +13,11 @@
 
     <div class="container mx-auto p-4">
         <h1 class="text-4xl font-bold mb-4">Stock</h1>
+
+        <div th:if="${error}" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            <strong class="font-bold">Erreur!</strong>
+            <span class="block sm:inline" th:text="${error}"></span>
+        </div>
         
         <table class="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
             <thead class="bg-gray-200">
@@ -27,13 +32,19 @@
                     <td class="py-2 px-4 border-b border-gray-300 text-center" th:text="${item.name}"></td>
                     <td class="py-2 px-4 border-b border-gray-300 text-center">
                         <div class="flex flex-row items-center justify-center">
-                            <button class="text-gray-900 border border-gray-900 hover:bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center">
-                                <i class="fas fa-minus text-xs"></i>
-                            </button>
+                            <form th:action="@{/stock/decrementer}" method="post">
+                                <input type="hidden" name="id" th:value="${item.id}">
+                                <button class="text-gray-900 border border-gray-900 hover:bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center">
+                                    <i class="fas fa-minus text-xs"></i>
+                                </button>
+                            </form>
                             <span class="mx-2" th:text="${item.quantity}"></span>
-                            <button class="text-gray-900 border border-gray-900 hover:bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center">
-                                <i class="fas fa-plus text-xs"></i>
-                            </button>
+                            <form th:action="@{/stock/incrementer}" method="post">
+                                <input type="hidden" name="id" th:value="${item.id}">
+                                <button class="text-gray-900 border border-gray-900 hover:bg-gray-200 rounded-full w-5 h-5 flex items-center justify-center">
+                                    <i class="fas fa-plus text-xs"></i>
+                                </button>
+                            </form>
                         </div>
                     </td>
                     <td class="py-2 px-4 border-b border-gray-300 text-center">
@@ -57,7 +68,7 @@
             </div>
             <div class="mb-4">
                 <label for="id-quantity" class="block text-gray-700 font-bold mb-2">Quantité</label>
-                <input type="number" min="0" id="id-quantity" th:field="*{quantity}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent">
+                <input type="number" min="1" id="id-quantity" th:field="*{quantity}" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent" value="1">
             </div>
             <button type="submit" class="w-full bg-orange-400 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50">
                 Ajouter
